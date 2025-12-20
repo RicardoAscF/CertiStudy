@@ -1,0 +1,102 @@
+/* =========================
+   CertiStudy - Main Styles
+   ========================= */
+
+/* Theme tokens */
+:root{
+  --cs-bg: #FDECEF;          /* pastel pink background */
+  --cs-card: #FFFFFF;
+  --cs-text: #2f2f2f;
+  --cs-muted: #6f6f6f;
+  --cs-accent: #E91E63;      /* magenta */
+  --cs-accent-soft: rgba(233, 30, 99, 0.18);
+  --cs-border: rgba(0,0,0,0.08);
+}
+
+/* Page background + center layout */
+.cs-body{
+  background: var(--cs-bg);
+  color: var(--cs-text);
+  min-height: 100vh;
+}
+
+.cs-main{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 28px 14px;
+}
+
+/* Card wrapper to avoid full width */
+.cs-card-wrapper{
+  width: 100%;
+  max-width: 420px;     /* key: limits width */
+}
+
+/* Card look similar to screenshots */
+.cs-card{
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--cs-border);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+}
+
+/* Top magenta bar */
+.cs-accent{
+  height: 4px;
+  background: var(--cs-accent);
+}
+
+/* Card content spacing */
+.cs-card-content{
+  padding: 36px 32px 30px 32px !important
+}
+
+
+/* Brand */
+.cs-brand{
+  margin-bottom: 14px;
+}
+
+.cs-logo-circle{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  margin: 0 auto 10px auto;
+  display: grid;
+  place-items: center;
+  background: rgba(233,30,99,0.10);
+  border: 1px solid rgba(233,30,99,0.25);
+}
+
+.cs-logo-icon{
+  color: var(--cs-accent);
+  font-size: 22px;
+}
+
+.cs-title{
+  margin: 0;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.cs-subtitle{
+  margin: 6px 0 0 0;
+  color: var(--cs-muted);
+  font-size: 1.4rem;
+}
+
+/* Inputs */
+.cs-input{
+  margin-top: 18px;
+}
+
+/* Make prefix icons look like your style */
+.cs-prefix{
+  color: rgba(0,0,0,0.35) !important;
+}
+
+/* Materialize input focus color */
+.input-field input[type=email]:focus,
+.input-field input[ty]()

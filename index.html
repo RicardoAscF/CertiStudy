@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CertiStudy | Login</title>
+
+  <!-- Materialize CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+
+  <!-- Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="./styles/main.css" />
+</head>
+
+<body class="cs-body">
+
+  <main class="cs-main">
+    <div class="cs-card-wrapper">
+      <div class="cs-card card z-depth-1">
+        <!-- Top accent line (like your magenta separator) -->
+        <div class="cs-accent"></div>
+
+        <div class="card-content cs-card-content">
+          <!-- Brand -->
+          <div class="cs-brand center-align">
+            <div class="cs-logo-circle">
+              <i class="material-icons cs-logo-icon">school</i>
+            </div>
+            <h5 class="cs-title">CertiStudy</h5>
+            <p class="cs-subtitle">Log in to continue your learning path</p>
+          </div>
+
+          <!-- Form -->
+          <form id="loginForm" class="cs-form" autocomplete="on">
+            <div class="input-field cs-input">
+              <i class="material-icons prefix cs-prefix">email</i>
+              <input id="email" type="email" class="validate" required />
+              <label for="email">Email</label>
+            </div>
+
+            <div class="input-field cs-input">
+              <i class="material-icons prefix cs-prefix">lock</i>
+              <input id="password" type="password" class="validate" required />
+              <label for="password">Password</label>
+            </div>
+
+            <div class="cs-row-between">
+              <label class="cs-remember">
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
+
+              <a class="cs-link" href="./pages/test.html">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn waves-effect waves-light cs-btn-primary">
+              Sign In
+              <i class="material-icons right">login</i>
+            </button>
+
+       
+
+            <!-- Small loader (hidden by default; show it while logging in) -->
+            <div class="cs-mini-loader center-align" id="miniLoader" style="display:none;">
+              <div class="progress cs-progress">
+                <div class="indeterminate"></div>
+              </div>
+              <span class="cs-loader-text">Signing in...</span>
+            </div>
+
+            <!-- Error message placeholder -->
+            <div class="cs-error red-text center-align" id="errorMsg" style="display:none;">
+              Invalid credentials. Please try again.
+            </div>
+          </form>
+        </div>
+
+        <!-- Footer mini -->
+        <div class="card-action cs-card-action center-align">
+          <span class="cs-footer-text">By continuing you agree to the Terms & Privacy.</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- (Optional) Minimal UI behavior demo -->
+  <script>
+    const form = document.getElementById('loginForm');
+    const loader = document.getElementById('miniLoader');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Demo: show loader
+      errorMsg.style.display = 'none';
+      loader.style.display = 'block';
+
+      // Fake delay for UI (replace with Firebase later)
+      setTimeout(() => {
+        loader.style.display = 'none';
+
+        // Fake error (replace with real auth response)
+        errorMsg.style.display = 'block';
+      }, 900);
+    });
+  </script>
+
+</body>
+</html>
