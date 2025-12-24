@@ -31,7 +31,7 @@
 /* Card wrapper to avoid full width */
 .cs-card-wrapper{
   width: 100%;
-  max-width: 420px;     /* key: limits width */
+  max-width: 420px; /* key: limits width */
 }
 
 /* Card look similar to screenshots */
@@ -40,6 +40,7 @@
   overflow: hidden;
   border: 1px solid var(--cs-border);
   box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+  background: var(--cs-card);
 }
 
 /* Top magenta bar */
@@ -50,9 +51,8 @@
 
 /* Card content spacing */
 .cs-card-content{
-  padding: 36px 32px 30px 32px !important
+  padding: 36px 32px 30px 32px !important;
 }
-
 
 /* Brand */
 .cs-brand{
@@ -97,6 +97,119 @@
   color: rgba(0,0,0,0.35) !important;
 }
 
-/* Materialize input focus color */
+/* Materialize input focus + label colors */
 .input-field input[type=email]:focus,
-.input-field input[ty]()
+.input-field input[type=password]:focus{
+  border-bottom: 1px solid var(--cs-accent) !important;
+  box-shadow: 0 1px 0 0 var(--cs-accent) !important;
+}
+
+.input-field input[type=email]:focus + label,
+.input-field input[type=password]:focus + label{
+  color: var(--cs-accent) !important;
+}
+
+.input-field input[type=email].valid,
+.input-field input[type=password].valid{
+  border-bottom: 1px solid rgba(0,0,0,0.25) !important;
+  box-shadow: none !important;
+}
+
+.input-field .prefix.active{
+  color: var(--cs-accent) !important;
+}
+
+/* Row between remember + link */
+.cs-row-between{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cs-remember span{
+  color: rgba(0,0,0,0.55);
+  font-size: 0.95rem;
+}
+
+/* Links */
+.cs-link{
+  color: #1976D2;
+  font-size: 0.95rem;
+}
+
+.cs-link:hover{
+  text-decoration: underline;
+}
+
+/* Primary button */
+.cs-btn-primary{
+  width: 100%;
+  margin-top: 18px;
+  background: #26a69a !important; /* materialize teal-ish like your screenshot */
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cs-btn-primary:focus{
+  background: #26a69a !important;
+}
+
+/* Loader */
+.cs-mini-loader{
+  margin-top: 16px;
+}
+
+.cs-progress{
+  background: rgba(0,0,0,0.08);
+}
+
+.cs-progress .indeterminate{
+  background: var(--cs-accent);
+}
+
+.cs-loader-text{
+  display: inline-block;
+  margin-top: 8px;
+  color: rgba(0,0,0,0.55);
+  font-size: 0.9rem;
+}
+
+/* Error */
+.cs-error{
+  margin-top: 14px;
+  font-size: 0.95rem;
+}
+
+/* Footer mini */
+.cs-card-action{
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  background: rgba(253, 236, 239, 0.35);
+}
+
+.cs-footer-text{
+  color: rgba(0,0,0,0.6);
+  font-size: 0.9rem;
+}
+
+/* ===== Responsive fine-tuning ===== */
+
+/* Small phones */
+@media (max-width: 420px){
+  .cs-card-wrapper{ max-width: 380px; }
+  .cs-card-content{ padding: 28px 22px 22px 22px !important; }
+  .cs-title{ font-size: 2.05rem; }
+  .cs-subtitle{ font-size: 1.05rem; }
+  .cs-row-between{ flex-wrap: wrap; }
+}
+
+/* Short screens (keyboard / small height) */
+@media (max-height: 700px){
+  .cs-main{
+    align-items: flex-start;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+}
