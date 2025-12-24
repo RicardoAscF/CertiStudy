@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CertiStudy | Dashboard</title>
+  <link rel="stylesheet" href="../styles/main.css" />
+</head>
+
+<body class="cs-body">
+
+  <main class="cs-main">
+    <div class="cs-card-wrapper">
+      <div class="cs-card card z-depth-1">
+        <div class="cs-accent"></div>
+
+        <div class="card-content cs-card-content center-align">
+          <h5 class="cs-title" style="font-size:2rem;">Dashboard</h5>
+          <p class="cs-subtitle" id="welcomeText"></p>
+
+          <button id="logoutBtn" class="btn cs-btn-primary" style="margin-top:18px;">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const userRaw = localStorage.getItem('cs_user');
+
+    if (!userRaw) {
+      window.location.href = '../index.html';
+    } else {
+      const user = JSON.parse(userRaw);
+      document.getElementById('welcomeText').textContent =
+        `Welcome, ${user.email}`;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('cs_user');
+      window.location.href = '../index.html';
+    });
+  </script>
+
+</body>
+</html>

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CertiStudy | Login</title>
 
-  <!-- Prevent Google translate popup (best effort) -->
   <meta name="google" content="notranslate">
 
   <!-- Materialize CSS -->
@@ -30,7 +29,6 @@
     <div class="cs-card-wrapper">
       <div class="cs-card card z-depth-1">
 
-        <!-- Top accent -->
         <div class="cs-accent"></div>
 
         <div class="card-content cs-card-content">
@@ -41,14 +39,14 @@
               <i class="material-icons cs-logo-icon">school</i>
             </div>
             <h5 class="cs-title">CertiStudy</h5>
-            <p>Responsive</p>
+            <p>Commit del login</p>
             <p class="cs-subtitle">
               Log in to continue your learning path
             </p>
           </div>
 
           <!-- Login form -->
-          <form id="loginForm" class="cs-form" autocomplete="on" novalidate>
+          <form id="loginForm" novalidate>
 
             <!-- Email -->
             <div class="input-field cs-input">
@@ -79,14 +77,11 @@
 
             <!-- Remember + forgot -->
             <div class="cs-row-between">
-              <div class="cs-remember">
-                <label for="remember">
-                  <input id="remember" type="checkbox" />
-                  <span>Remember me</span>
-                </label>
-              </div>
+              <label>
+                <input type="checkbox" />
+                <span>Remember me</span>
+              </label>
 
-              <!-- Placeholder until real page exists -->
               <a class="cs-link" href="#" onclick="return false;">
                 Forgot password?
               </a>
@@ -106,7 +101,6 @@
               class="cs-mini-loader center-align"
               id="miniLoader"
               style="display:none;"
-              aria-live="polite"
             >
               <div class="progress cs-progress">
                 <div class="indeterminate"></div>
@@ -119,10 +113,17 @@
               class="cs-error red-text center-align"
               id="errorMsg"
               style="display:none;"
-              role="alert"
-              aria-live="assertive"
             >
               Invalid credentials. Please try again.
+            </div>
+
+            <!-- Success -->
+            <div
+              class="cs-success green-text text-darken-2 center-align"
+              id="successMsg"
+              style="display:none;"
+            >
+              Login successful. Redirecting...
             </div>
 
           </form>
@@ -140,32 +141,10 @@
   </main>
 
   <!-- Materialize JS -->
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"
-  ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-  <!-- UI demo logic (replace with Firebase later) -->
-  <script>
-    const form = document.getElementById('loginForm');
-    const loader = document.getElementById('miniLoader');
-    const errorMsg = document.getElementById('errorMsg');
-    const submitBtn = form.querySelector('button[type="submit"]');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      errorMsg.style.display = 'none';
-      loader.style.display = 'block';
-      submitBtn.disabled = true;
-
-      // Fake delay (demo)
-      setTimeout(() => {
-        loader.style.display = 'none';
-        errorMsg.style.display = 'block';
-        submitBtn.disabled = false;
-      }, 900);
-    });
-  </script>
+  <!-- Login logic -->
+  <script src="./scripts/login.js"></script>
 
 </body>
 </html>
