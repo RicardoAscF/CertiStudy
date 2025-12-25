@@ -1,101 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CertiStudy | Dashboard</title>
-  <link rel="stylesheet" href="../styles/main.css" />
+
+  <!-- Materialize -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/layouts.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
 
 <body class="cs-body">
 
-  <main class="cs-main cs-main--top">
-    <div class="container" style="width:100%; max-width: 920px;">
-      <div class="row">
-        <div class="col s12 m10 offset-m1 l8 offset-l2">
-          <div class="card cs-card z-depth-1">
-            <div class="cs-accent"></div>
-  
-            <div class="card-content">
-              <div class="cs-dash-header">
-                <div>
-                  <h5 class="cs-dash-title">Mis certificaciones</h5>
-                  <p class="cs-dash-subtitle" id="welcomeText"></p>
-                </div>
-  
-                <button id="logoutBtn" class="btn-flat cs-logout-btn" type="button">
-                  Logout
-                </button>
-              </div>
-  
-              <div class="row cs-dash-row">
-                <div class="input-field col s12 m7">
-                  <select id="certSelect">
-                    <option value="" disabled selected>Elige una certificación</option>
-                    <option value="az900">Azure AZ-900</option>
-                    <option value="fiori">SAP Fiori</option>
-                  </select>
-                  <label>Certificación</label>
-                </div>
-  
-                <div class="col s12 m5 cs-dash-actions">
-                  <button id="showBtn" class="btn cs-btn-primary waves-effect waves-light" type="button">
-                    Show
-                  </button>
-  
-                  <button class="btn cs-btn-outline modal-trigger waves-effect" data-target="addCertModal" type="button">
-                    Add
-                  </button>
-                </div>
-  
-                <div class="col s12">
-                  <p id="dashMsg" class="cs-msg-error" style="display:none;"></p>
-                </div>
-              </div>
-  
-              <div class="divider"></div>
-  
-              <div class="cs-empty-state">
-                <i class="material-icons cs-empty-icon">school</i>
-                <p class="cs-empty-title">Crea tu primera certificación</p>
-                <p class="cs-empty-text">Por ahora es manual. Luego lo conectamos a Firestore.</p>
-                <a class="btn cs-btn-primary modal-trigger" data-target="addCertModal">Agregar certificación</a>
-              </div>
-  
-            </div>
-          </div>
-        </div>
-      </div>
+<main class="cs-main">
+  <div class="cs-card-wrapper card">
+
+    <button id="logoutBtn" class="btn cs-btn-primary">LOGOUT</button>
+
+    <h4>Mis certificaciones</h4>
+    <p id="userEmail"></p>
+
+    <div class="input-field">
+      <select id="certSelect">
+        <option value="" disabled selected>Elige una certificación</option>
+        <!-- JS insertará aquí -->
+      </select>
+      <label>Certificación</label>
     </div>
-  </main>
-  
-  <!-- Modal: Add certification -->
-  <div id="addCertModal" class="modal">
-    <div class="modal-content">
-      <h5>Agregar certificación</h5>
-  
-      <div class="input-field">
-        <input id="certNameInput" type="text" maxlength="60" />
-        <label for="certNameInput">Nombre (ej. AZ-900, SAP Basis)</label>
-      </div>
-  
-      <div class="input-field">
-        <input id="certIdInput" type="text" maxlength="40" />
-        <label for="certIdInput">ID (opcional, ej. az900)</label>
-        <span class="helper-text">Si lo dejas vacío, se genera automáticamente.</span>
-      </div>
-    </div>
-  
-    <div class="modal-footer">
-      <a href="#!" class="modal-close btn-flat">Cancelar</a>
-      <a href="#!" id="saveCertBtn" class="btn cs-btn-primary modal-close">Guardar</a>
-    </div>
+
+    <button id="showBtn" class="btn cs-btn-primary">SHOW</button>
+
+    <hr>
+
+    <h6>Agregar certificación</h6>
+    <input id="certNameInput" type="text" placeholder="Nombre (ej. AZ-900)">
+    <input id="certIdInput" type="text" placeholder="ID opcional">
+    <button id="addCertBtn" class="btn">GUARDAR</button>
+
   </div>
-  
+</main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script type="module" src="../scripts/dashboard.js"></script>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../scripts/dashboard.js"></script>
 </body>
 </html>
