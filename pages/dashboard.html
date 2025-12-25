@@ -26,22 +26,9 @@
     </div>
   </main>
 
-  <script>
-    const userRaw = localStorage.getItem('cs_user');
+ 
 
-    if (!userRaw) {
-      window.location.href = '../index.html';
-    } else {
-      const user = JSON.parse(userRaw);
-      document.getElementById('welcomeText').textContent =
-        `Welcome, ${user.email}`;
-    }
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('cs_user');
-      window.location.href = '../index.html';
-    });
-  </script>
+  <script type="module" src="../scripts/dashboard.js"></script>
 
 </body>
 </html>
