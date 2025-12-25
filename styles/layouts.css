@@ -1,0 +1,36 @@
+.cs-main{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 14px;
+  }
+  
+  .cs-card-wrapper{
+    width: 100%;
+    max-width: 420px;
+  }
+  
+  .cs-row-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  
+
+
+  @media (max-width: 420px){
+    .cs-card-wrapper{ max-width: 380px; }
+  }
+  
+  @media (max-height: 700px){
+    .cs-main{
+      align-items: flex-start;
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+  }
+  

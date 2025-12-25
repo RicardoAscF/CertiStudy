@@ -1,0 +1,16 @@
+:root{
+    --cs-bg: #FDECEF;
+    --cs-card: #FFFFFF;
+    --cs-text: #2f2f2f;
+    --cs-muted: #6f6f6f;
+    --cs-accent: #E91E63;
+    --cs-accent-soft: rgba(233, 30, 99, 0.18);
+    --cs-border: rgba(0,0,0,0.08);
+  }
+  
+  .cs-body{
+    background: var(--cs-bg);
+    color: var(--cs-text);
+    min-height: 100vh;
+  }
+  

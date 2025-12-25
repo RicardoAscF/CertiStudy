@@ -1,0 +1,59 @@
+
+/************************************** Cards ************/
+.cs-card{
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--cs-border);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+    background: var(--cs-card);
+  }
+  
+  .cs-accent{
+    height: 4px;
+    background: var(--cs-accent);
+  }
+  
+  /* End Cards ************/
+
+  /************************************** Brand & Texts ************/
+
+  .cs-brand{
+    margin-bottom: 14px;
+  }
+  
+  .cs-title{
+    margin: 0;
+    font-weight: 700;
+    font-size: 2.5rem;
+  }
+  
+  .cs-subtitle{
+    margin: 6px 0 0 0;
+    color: var(--cs-muted);
+    font-size: 1.4rem;
+  }
+
+  /* End Brand & Texts ************/
+
+
+
+  /************************************** Inputs, Buttons & Loaders ************/
+
+  
+  .cs-btn-primary{
+    width: 100%;
+    margin-top: 18px;
+    background: #26a69a !important;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .cs-mini-loader{
+    margin-top: 16px;
+  }
+  
+  /* End Inputs, Buttons & Loaders ************/
+
+
+  
