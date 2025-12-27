@@ -1,5 +1,6 @@
 // scripts/login.js
 import { auth } from "./firebase.js";
+import { toastSuccess, toastError } from "./toast.js";
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged
@@ -58,12 +59,18 @@ form.addEventListener("submit", async (e) => {
     setLoading(false);
     successMsg.style.display = "block";
 
+    // ✅ Toast de prueba (login correcto)
+    toastSuccess("Login successful ✅", { icon: "check_circle" });
+
     setTimeout(() => {
       window.location.href = "./pages/dashboard.html";
-    }, 500);
+    }, 600);
   } catch (err) {
     setLoading(false);
-    errorMsg.textContent = humanizeFirebaseError(err?.code);
+    const msg = humanizeFirebaseError(err?.code);
+    errorMsg.textContent = msg;
     errorMsg.style.display = "block";
+    // (Opcional) Toast para error de login
+    toastError(msg, { icon: "error" });
   }
 });
