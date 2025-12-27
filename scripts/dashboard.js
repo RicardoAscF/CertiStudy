@@ -20,6 +20,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const certIdInput = document.getElementById("certIdInput");
   const addCertBtn = document.getElementById("addCertBtn");
   const userEmail = document.getElementById("userEmail");
+  const openCertBtn = document.getElementById("openCertBtn");
+openCertBtn?.addEventListener("click", () => {
+  const certId = certSelect?.value;
+  if (!certId) {
+    if (window.toastWarn) {
+      toastWarn("Selecciona una certificación primero.");
+    } else {
+      alert("Selecciona una certificación primero.");
+    }
+    return;
+  }
+  window.location.href = `./certification.html?certId=${encodeURIComponent(certId)}`;
+});
+
+
+
 
   let currentUser = null;
 

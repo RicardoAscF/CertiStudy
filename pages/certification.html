@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CertiStudy | Certificación</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <link rel="stylesheet" href="../styles/base.css">
+  <link rel="stylesheet" href="../styles/layouts.css">
+  <link rel="stylesheet" href="../styles/components.css">
+  <link rel="stylesheet" href="../styles/certification.css">
+</head>
+
+<body class="cs-body">
+
+  <!-- Top bar -->
+  <header class="cs-topbar">
+    <a href="#" data-target="chaptersSidenav" class="sidenav-trigger cs-topbar__icon" aria-label="Abrir capítulos">
+      <i class="material-icons">menu</i>
+    </a>
+
+    <div class="cs-topbar__title">
+      <span class="cs-brand">CertiStudy</span>
+      <span class="cs-topbar__subtitle" id="certTitleMini">Certificación</span>
+    </div>
+
+    <div class="cs-topbar__actions">
+      <a class="btn-flat cs-topbar__btn" id="backToDashboardBtn" title="Volver">
+        <i class="material-icons">arrow_back</i>
+      </a>
+      <a class="btn-flat cs-topbar__btn" id="logoutBtn" title="Logout">
+        <i class="material-icons">logout</i>
+      </a>
+    </div>
+  </header>
+
+  <!-- Sidenav: Chapters -->
+  <ul id="chaptersSidenav" class="sidenav">
+    <li class="cs-sidenav-header">
+      <div class="cs-sidenav-title">Capítulos</div>
+      <div class="cs-sidenav-subtitle" id="certTitleSidenav">—</div>
+    </li>
+    <li><div class="divider"></div></li>
+
+    <li class="cs-sidenav-actions">
+      <a class="btn cs-btn-primary cs-full" id="addChapterBtn">
+        <i class="material-icons left">add</i>Agregar capítulo
+      </a>
+    </li>
+
+    <li><div class="divider"></div></li>
+
+    <div id="chaptersList" class="cs-sidenav-list">
+      <!-- capítulos dinámicos -->
+    </div>
+  </ul>
+
+  <main class="cs-main cs-cert-main">
+    <div class="cs-card-wrapper cs-cert-wrapper">
+      <div class="card cs-cert-card">
+        <div class="card-content cs-card-content">
+
+          <!-- Cover / Header -->
+          <div class="cs-cert-header">
+            <div class="cs-cert-cover">
+              <img id="certCoverImg" class="cs-cert-cover__img" alt="Cover" />
+              <div id="certCoverPlaceholder" class="cs-cert-cover__placeholder">
+                <i class="material-icons">image</i>
+                <div>Sin imagen</div>
+              </div>
+              <a class="btn-small cs-cert-cover__edit" id="editCoverBtn" title="Editar imagen">
+                <i class="material-icons">edit</i>
+              </a>
+            </div>
+
+            <div class="cs-cert-meta">
+              <h4 class="cs-title cs-cert-title" id="certTitle">Certificación</h4>
+              <div class="cs-row-between">
+                <span class="chip cs-chip" id="currentChapterChip">Sin capítulos</span>
+                <a class="btn-small cs-btn-primary" id="addChapterBtnTop">
+                  <i class="material-icons left">add</i>Capítulo
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider cs-divider"></div>
+
+          <!-- Chapter content -->
+          <section class="cs-chapter-section">
+            <div class="cs-row-between">
+              <div class="input-field cs-chapter-title-field">
+                <input id="chapterTitleInput" type="text" placeholder="Nombre del capítulo" disabled />
+                <label for="chapterTitleInput" class="active">Capítulo</label>
+              </div>
+
+              <div class="cs-chapter-actions">
+                <a class="btn-small cs-btn-secondary" id="saveChapterTitleBtn" disabled>
+                  <i class="material-icons left">save</i>Guardar
+                </a>
+                <a class="btn-small cs-btn-primary" id="addSubchapterBtn" disabled>
+                  <i class="material-icons left">add</i>Subcapítulo
+                </a>
+              </div>
+            </div>
+
+            <div id="subchaptersEmpty" class="cs-empty">
+              Selecciona un capítulo o crea el primero.
+            </div>
+
+            <ul id="subchaptersList" class="cs-subchapters">
+              <!-- subcapítulos dinámicos -->
+            </ul>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="module" src="../scripts/certification.js"></script>
+</body>
+</html>
