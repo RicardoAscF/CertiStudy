@@ -1,5 +1,6 @@
 // scripts/dashboard.js
 import { auth, db } from "./firebase.js";
+import { toastSuccess, toastError, toastInfo, toastWarn } from "./toast.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
   doc,
@@ -33,6 +34,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderSelect(certifications) {
     certSelect.length = 1; // deja placeholder
+
+    // Si no hay certs, dejamos el placeholder y listo
+    if (!certifications || certifications.length === 0) {
+      M.FormSelect.init(certSelect);
+      return;
+    }
+
     certifications.forEach((cert) => {
       const opt = document.createElement("option");
       opt.value = cert.id;
@@ -54,8 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!snap.exists()) {
       await setDoc(userRef, { ...baseData, createdAt: serverTimestamp() });
+      toastInfo("Perfil creado ✅", { icon: "person_add" });
     } else {
       await setDoc(userRef, baseData, { merge: true });
+      // Nota: evitamos toast en cada login para no molestar.
     }
   }
 
@@ -76,6 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     renderSelect(certs);
+
+    if (certs.length === 0) {
+      toastWarn("Aún no tienes certificaciones. Agrega la primera 👇", { icon: "info" });
+    }
   }
 
   async function saveCert(user, certId, certName) {
@@ -110,12 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
     userEmail.textContent = `Welcome, ${user.email}`;
 
     try {
-      await upsertUserProfile(user); // 🔥 crea/actualiza users/{uid}
-      await loadCerts(user);         // 🔥 carga certs del usuario
+      await upsertUserProfile(user);
+      await loadCerts(user);
       console.log("✅ Firestore listo: perfil + certs");
     } catch (err) {
       console.error("❌ Firestore error:", err);
-      alert("Firestore: no se pudo sincronizar tu perfil o cargar certificaciones. Revisa consola.");
+      toastError("Firestore: no se pudo cargar tu perfil/certs.", { icon: "error" });
     }
   });
 
@@ -123,34 +137,43 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutBtn.addEventListener("click", async () => {
     try {
       await signOut(auth);
-      window.location.href = "../index.html";
+      toastInfo("Sesión cerrada", { icon: "logout" });
+      setTimeout(() => {
+        window.location.href = "../index.html";
+      }, 250);
     } catch (err) {
       console.error("Error al cerrar sesión:", err);
-      alert("No se pudo cerrar sesión. Revisa la consola.");
+      toastError("No se pudo cerrar sesión.", { icon: "error" });
     }
   });
 
   // ✅ GUARDAR cert en Firestore + recargar select
   addCertBtn.addEventListener("click", async () => {
     const name = certNameInput.value.trim();
-    if (!name) return;
+    const id = certIdInput.value.trim();
 
-    if (!currentUser) {
-      alert("No hay sesión activa.");
+    if (!name) {
+      toastWarn("Escribe el nombre de la certificación.", { icon: "edit" });
+      certNameInput.focus();
       return;
     }
 
-    const id = certIdInput.value.trim();
+    if (!currentUser) {
+      toastError("No hay sesión activa.", { icon: "lock" });
+      return;
+    }
 
     try {
-      await saveCert(currentUser, id, name);
+      const savedId = await saveCert(currentUser, id, name);
       await loadCerts(currentUser);
 
       certNameInput.value = "";
       certIdInput.value = "";
+
+      toastSuccess(`Certificación guardada: ${savedId.toUpperCase()}`, { icon: "check_circle" });
     } catch (err) {
       console.error("Error guardando cert:", err);
-      alert("No se pudo guardar la certificación. Revisa consola.");
+      toastError("No se pudo guardar la certificación.", { icon: "error" });
     }
   });
 });
