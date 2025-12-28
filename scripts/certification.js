@@ -90,7 +90,7 @@ async function loadChapters(){
   snaps.forEach((d) => chapters.push({ id: d.id, ...d.data() }));
 
   if (chapters.length === 0){
-    qs("currentChapterChip").textContent = "Sin capítulos";
+    //qs("currentChapterChip").textContent = "Sin capítulos";
     setCurrentChapterUI(false);
     return [];
   }
@@ -137,7 +137,7 @@ async function selectChapter(chapterId){
   qs("chapterTitleInput").value = data.title || "";
   M.updateTextFields();
 
-  qs("currentChapterChip").textContent = data.title ? data.title : "Capítulo";
+  //qs("currentChapterChip").textContent = data.title ? data.title : "Capítulo";
   setCurrentChapterUI(true);
 
   await loadSubchapters();
@@ -182,7 +182,7 @@ async function saveChapterTitle(){
       title,
       updatedAt: serverTimestamp()
     });
-    qs("currentChapterChip").textContent = title;
+    //qs("currentChapterChip").textContent = title;
     toastSuccess("Capítulo actualizado ✅");
     await loadChapters();
   } catch (e){
