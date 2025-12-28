@@ -101,6 +101,9 @@
 
 .cs-cert-title{
   margin: 0 0 6px 0;
+  border: 1px solid red;
+  text-align: center;
+
 }
 
 .cs-divider{ margin: 18px 0; }
