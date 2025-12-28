@@ -94,9 +94,17 @@
           <!-- Chapter content -->
           <section class="cs-chapter-section">
             <div class="cs-row-between">
-              <div class="input-field cs-chapter-title-field">
-                <input id="chapterTitleInput" type="text" placeholder="Nombre del capítulo" disabled />
-                <label for="chapterTitleInput" class="active">Capítulo</label>
+              <div class="cs-chapter-header">
+                <div class="cs-chapter-header__meta">
+                  <div class="cs-chapter-header__label">Capítulo</div>
+                  <div class="cs-chapter-header__title" id="chapterTitleText">Selecciona un capítulo</div>
+                </div>
+              
+                <div class="cs-chapter-header__actions">
+                  <a class="btn-small cs-btn-secondary" id="editChapterBtn" disabled title="Editar capítulo">
+                    <i class="material-icons left">edit</i>Editar
+                  </a>
+                </div>
               </div>
 
               <div class="cs-chapter-actions">
@@ -107,6 +115,7 @@
                   <i class="material-icons left">add</i>Subcapítulo
                 </a>
               </div>
+
             </div>
 
             <div id="subchaptersEmpty" class="cs-empty">
@@ -125,6 +134,25 @@
       
 
   </main>
+
+
+  <!-- Modal: Edit chapter -->
+  <div id="editChapterModal" class="modal">
+    <div class="modal-content">
+      <h5 class="cs-title" style="margin-top:0;">Editar capítulo</h5>
+
+      <div class="input-field">
+        <input id="editChapterNameInput" type="text" maxlength="80" />
+        <label for="editChapterNameInput" class="active">Nombre del capítulo</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat">Cancelar</a>
+      <a href="#!" id="saveChapterNameModalBtn" class="btn cs-btn-primary">Guardar</a>
+    </div>
+  </div>
+
   
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

@@ -1,5 +1,28 @@
 /* styles/certification.css */
 
+
+/* Chapter header (replaces editable input) */
+.cs-chapter-header{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  padding: 6px 0 10px 0;
+}
+
+.cs-chapter-header__label{
+  font-size: 0.85rem;
+  opacity: .7;
+  margin-bottom: 4px;
+}
+
+.cs-chapter-header__title{
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+
 /* Topbar */
 .cs-topbar{
   position: sticky;

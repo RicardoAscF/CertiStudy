@@ -14,6 +14,71 @@ let certId = null;
 let currentChapterId = null;
 let currentChapterRef = null;
 
+
+
+
+// --- Modal + UI logic for chapter title (UI only) ---
+document.addEventListener('DOMContentLoaded', () => {
+  // Init modals (Materialize)
+  const modalElem = document.getElementById('editChapterModal');
+  const modalInstance = M.Modal.init(modalElem, { dismissible: true });
+
+  const chapterTitleText = document.getElementById('chapterTitleText');
+  const editChapterBtn = document.getElementById('editChapterBtn');
+
+  const editInput = document.getElementById('editChapterNameInput');
+  const saveModalBtn = document.getElementById('saveChapterNameModalBtn');
+
+  // --- DEMO state ---
+  // En tu app real, esto vendrá del capítulo seleccionado (ej. selectedChapterId + data de Firestore)
+  let selectedChapter = {
+    id: null,
+    title: null,
+  };
+
+  // Helper: set selected chapter (esto lo vas a llamar cuando el usuario seleccione un capítulo del sidenav)
+  window.csSetSelectedChapter = (chapterId, chapterTitle) => {
+    selectedChapter.id = chapterId;
+    selectedChapter.title = chapterTitle;
+
+    chapterTitleText.textContent = chapterTitle || 'Sin nombre';
+    editChapterBtn.disabled = false;
+  };
+
+  // Cuando le den Editar: abre modal y precarga nombre actual
+  editChapterBtn.addEventListener('click', () => {
+    if (!selectedChapter.id) return;
+
+    editInput.value = selectedChapter.title || '';
+    M.updateTextFields();
+    modalInstance.open();
+    editInput.focus();
+  });
+
+  // Guardar en modal: actualiza UI (en tu app real aquí harías updateDoc en Firestore)
+  saveModalBtn.addEventListener('click', () => {
+    const newTitle = (editInput.value || '').trim();
+
+    if (!newTitle) {
+      // aquí podrías usar toastWarn("Pon un nombre")
+      return;
+    }
+
+    selectedChapter.title = newTitle;
+    chapterTitleText.textContent = newTitle;
+
+    modalInstance.close();
+
+    // aquí podrías usar toastSuccess("Capítulo actualizado")
+  });
+
+  // --- DEMO: para que puedas probarlo YA sin conectar tu lista ---
+  // Simula que ya hay un capítulo seleccionado:
+  // (cuando lo conectemos de verdad, quitas esto)
+  window.csSetSelectedChapter('demo-ch1', 'Capítulo 1');
+});
+
+
 function qs(id){ return document.getElementById(id); }
 
 function initMaterialize(){
@@ -70,13 +135,27 @@ function chapterLabel(i, title){
   return `${i}. ${title || "Capítulo"}`;
 }
 
-function setCurrentChapterUI(enabled){
-  qs("chapterTitleInput").disabled = !enabled;
-  qs("saveChapterTitleBtn").disabled = !enabled;
+
+
+function setCurrentChapterUI(enabled, chapterTitle = ""){
+  // Nuevo UI (no input)
+  const titleEl = qs("chapterTitleText");
+  const editBtn = qs("editChapterBtn");
+
+  if (titleEl){
+    titleEl.textContent = enabled ? (chapterTitle || "Capítulo") : "Selecciona un capítulo";
+  }
+  if (editBtn){
+    editBtn.disabled = !enabled;
+  }
+
+  // Mantengo lo demás igual
+  qs("saveChapterTitleBtn").disabled = !enabled;   // (lo quitaremos después si quieres)
   qs("addSubchapterBtn").disabled = !enabled;
 
   qs("subchaptersEmpty").style.display = enabled ? "none" : "block";
 }
+
 
 async function loadChapters(){
   const chaptersCol = collection(db, "users", uid, "certs", certId, "chapters");
@@ -122,26 +201,30 @@ async function loadChapters(){
   return chapters;
 }
 
+
+
+
 async function selectChapter(chapterId){
   currentChapterId = chapterId;
   currentChapterRef = doc(db, "users", uid, "certs", certId, "chapters", chapterId);
 
-  // highlight in sidenav
-  const links = qs("chaptersList").querySelectorAll("a");
-  links.forEach(a => a.classList.remove("cs-active"));
-  // best-effort: highlight by matching chapterId via closure not available, skip
-
   const snap = await getDoc(currentChapterRef);
   const data = snap.data() || {};
 
-  qs("chapterTitleInput").value = data.title || "";
-  M.updateTextFields();
+  // UI nuevo: título estático
+  setCurrentChapterUI(true, data.title || "Capítulo");
 
-  //qs("currentChapterChip").textContent = data.title ? data.title : "Capítulo";
-  setCurrentChapterUI(true);
+  // Conecta el modal de editar (usa tu helper que ya creaste arriba)
+  if (window.csSetSelectedChapter){
+    window.csSetSelectedChapter(chapterId, data.title || "Capítulo");
+  }
 
   await loadSubchapters();
 }
+
+
+
+
 
 async function getNextOrder(colRef){
   const qy = query(colRef, orderBy("order", "desc"), limit(1));
@@ -169,27 +252,9 @@ async function addChapter(){
 }
 
 async function saveChapterTitle(){
-  if (!currentChapterRef) return;
-
-  const title = qs("chapterTitleInput").value.trim();
-  if (!title){
-    toastWarn("Ponle nombre al capítulo.");
-    return;
-  }
-
-  try{
-    await updateDoc(currentChapterRef, {
-      title,
-      updatedAt: serverTimestamp()
-    });
-    //qs("currentChapterChip").textContent = title;
-    toastSuccess("Capítulo actualizado ✅");
-    await loadChapters();
-  } catch (e){
-    console.error(e);
-    toastError("No se pudo guardar el capítulo.");
-  }
+  toastInfo("Ahora el nombre del capítulo se edita desde el botón Editar (modal).");
 }
+
 
 async function loadSubchapters(){
   if (!currentChapterId) return;
