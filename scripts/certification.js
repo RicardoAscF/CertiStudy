@@ -151,7 +151,12 @@ function setCurrentChapterUI(enabled, chapterTitle = ""){
 
   // Mantengo lo demás igual
   //qs("saveChapterTitleBtn").disabled = !enabled;   // (lo quitaremos después si quieres)
-  qs("addSubchapterBtn").disabled = !enabled;
+  const btnSubTop = qs("addSubchapterBtnTop");
+  if (btnSubTop) btnSubTop.disabled = !enabled;
+
+  const btnSubNav = qs("addSubchapterBtnNav");
+  if (btnSubNav) btnSubNav.disabled = !enabled;
+
 
   qs("subchaptersEmpty").style.display = enabled ? "none" : "block";
 }
@@ -388,7 +393,12 @@ function wireUI(){
   qs("addChapterBtn").addEventListener("click", addChapter);
   qs("addChapterBtnTop").addEventListener("click", addChapter);
 
-  qs("addSubchapterBtn").addEventListener("click", addSubchapter);
+  const btnSubTop = qs("addSubchapterBtnTop");
+  if (btnSubTop) btnSubTop.addEventListener("click", addSubchapter);
+
+  const btnSubNav = qs("addSubchapterBtnNav");
+  if (btnSubNav) btnSubNav.addEventListener("click", addSubchapter);
+
   //qs("saveChapterTitleBtn").addEventListener("click", saveChapterTitle);
 
   qs("editCoverBtn").addEventListener("click", editCover);
