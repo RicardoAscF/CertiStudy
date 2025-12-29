@@ -150,7 +150,7 @@ function setCurrentChapterUI(enabled, chapterTitle = ""){
   }
 
   // Mantengo lo demás igual
-  qs("saveChapterTitleBtn").disabled = !enabled;   // (lo quitaremos después si quieres)
+  //qs("saveChapterTitleBtn").disabled = !enabled;   // (lo quitaremos después si quieres)
   qs("addSubchapterBtn").disabled = !enabled;
 
   qs("subchaptersEmpty").style.display = enabled ? "none" : "block";
@@ -251,9 +251,11 @@ async function addChapter(){
   await loadChapters();
 }
 
+/*
 async function saveChapterTitle(){
   toastInfo("Ahora el nombre del capítulo se edita desde el botón Editar (modal).");
 }
+*/
 
 
 async function loadSubchapters(){
@@ -387,7 +389,7 @@ function wireUI(){
   qs("addChapterBtnTop").addEventListener("click", addChapter);
 
   qs("addSubchapterBtn").addEventListener("click", addSubchapter);
-  qs("saveChapterTitleBtn").addEventListener("click", saveChapterTitle);
+  //qs("saveChapterTitleBtn").addEventListener("click", saveChapterTitle);
 
   qs("editCoverBtn").addEventListener("click", editCover);
 }
