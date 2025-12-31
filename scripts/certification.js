@@ -199,12 +199,14 @@ async function selectChapter(chapterId){
 
   const snap = await getDoc(currentChapterRef);
   const data = snap.data() || {};
+  // UI: ahora es texto, no input
+  setCurrentChapterUI(true, chapter.title || "");
 
-  qs("chapterTitleInput").value = data.title || "";
-  M.updateTextFields();
+  // si existe tu helper del modal (para renombrar), sincronízalo
+  if (window.csSetSelectedChapter) {
+    window.csSetSelectedChapter(chapter.id, chapter.title || "");
+  }
 
-  //qs("currentChapterChip").textContent = data.title ? data.title : "Capítulo";
-  setCurrentChapterUI(true);
 
   await loadSubchapters();
 }
