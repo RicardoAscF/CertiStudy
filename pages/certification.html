@@ -45,15 +45,9 @@
     <li><div class="divider"></div></li>
 
     <li class="cs-sidenav-actions">
-      <a class="btn cs-btn-primary cs-full" id="addChapterBtn">
-        <i class="material-icons left">add</i>Capítulo
+      <a class="btn cs-btn-primary cs-full" id="addChapterBtnNav">
+        <i class="material-icons left">add</i>Agregar capítulo
       </a>
-
-      <a class="btn-small cs-btn-primary" id="addSubchapterBtnNav" disabled>
-        <i class="material-icons left">add</i>Subcapítulo
-      </a>
-      
-
     </li>
 
     <li><div class="divider"></div></li>
@@ -91,12 +85,6 @@
                 <a class="btn-small cs-btn-primary" id="addChapterBtnTop">
                   <i class="material-icons left">add</i>Capítulo
                 </a>
-
-                <a class="btn-small cs-btn-primary" id="addSubchapterBtnTop" disabled>
-                  <i class="material-icons left">add</i>Subcapítulo
-                </a>
-                
-
               </div>
             </div>
           </div>
@@ -108,7 +96,7 @@
             <div class="cs-row-between">
               <div class="cs-chapter-header">
                 <div class="cs-chapter-header__meta">
-                  <div class="cs-chapter-header__label">Estas Viendo:</div>
+                  <div class="cs-chapter-header__label">Capítulo</div>
                   <div class="cs-chapter-header__title" id="chapterTitleText">Selecciona un capítulo</div>
                 </div>
               
@@ -119,13 +107,11 @@
                 </div>
               </div>
 
-              <!--
               <div class="cs-chapter-actions">
-                <a class="btn-small cs-btn-secondary" id="saveChapterTitleBtn" disabled>
-                  <i class="material-icons left">save</i>Guardar
+<a class="btn-small cs-btn-primary" id="addSubchapterBtnTop" disabled>
+                  <i class="material-icons left">add</i>Subcapítulo
                 </a>
               </div>
-              -->
 
             </div>
 
@@ -136,41 +122,64 @@
             <ul id="subchaptersList" class="cs-subchapters">
               <!-- subcapítulos dinámicos -->
             </ul>
-
-            
           </section>
+
         </div>
       </div>
 
       
       
-      <h2>Capitulo 1.1</h2> 
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion (tipo de seccion)</p>
-        </div>
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion 2 (tipo de seccion)</p>
-        </div>
-      
-      <h2>Capitulo 1.2</h2> 
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion (tipo de seccion)</p>
-        </div>
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion 2 (tipo de seccion)</p>
-        </div>
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion 3 (tipo de seccion)</p>
-        </div>
 
-      <h2>Capitulo 1.3</h2>
-        <div class="card cs-cert-card">
-          <p>Contenido de la seccion (tipo de seccion)</p>
-        </div>
   </main>
 
 
-  <!-- Modal: Edit chapter -->
+  
+  <!-- Modal: Crear capítulo -->
+  <div id="createChapterModal" class="modal">
+    <div class="modal-content">
+      <h5 class="cs-title" style="margin-top:0;">Nuevo capítulo</h5>
+
+      <p class="grey-text">
+        Se creará como: <strong id="chapterPrefixPreview">Capítulo X</strong>
+      </p>
+
+      <div class="input-field">
+        <input id="chapterSuffixInput" type="text" maxlength="80" />
+        <label for="chapterSuffixInput" class="active">Título adicional (opcional)</label>
+      </div>
+      <div class="grey-text" style="margin-top:-10px;">Ej: “Sorpresa en Azure”</div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat">Cancelar</a>
+      <a href="#!" id="confirmCreateChapterBtn" class="btn cs-btn-primary">Crear</a>
+    </div>
+  </div>
+
+  <!-- Modal: Crear subcapítulo -->
+  <div id="createSubchapterModal" class="modal">
+    <div class="modal-content">
+      <h5 class="cs-title" style="margin-top:0;">Nuevo subcapítulo</h5>
+
+      <p class="grey-text">
+        Se creará como: <strong id="subchapterPrefixPreview">X.Y</strong>
+      </p>
+
+      <div class="input-field">
+        <input id="subchapterSuffixInput" type="text" maxlength="80" />
+        <label for="subchapterSuffixInput" class="active">Título adicional (opcional)</label>
+      </div>
+      <div class="grey-text" style="margin-top:-10px;">Ej: “Servicios de cómputo”</div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat">Cancelar</a>
+      <a href="#!" id="confirmCreateSubchapterBtn" class="btn cs-btn-primary">Crear</a>
+    </div>
+  </div>
+
+
+<!-- Modal: Edit chapter -->
   <div id="editChapterModal" class="modal">
     <div class="modal-content">
       <h5 class="cs-title" style="margin-top:0;">Editar capítulo</h5>

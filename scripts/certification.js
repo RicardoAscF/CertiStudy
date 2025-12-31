@@ -13,6 +13,7 @@ let certId = null;
 
 let currentChapterId = null;
 let currentChapterRef = null;
+let currentChapterOrder = null;
 
 
 
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- DEMO: para que puedas probarlo YA sin conectar tu lista ---
   // Simula que ya hay un capítulo seleccionado:
   // (cuando lo conectemos de verdad, quitas esto)
-  window.csSetSelectedChapter('demo-ch1', 'Capítulo 1');
+  // window.csSetSelectedChapter('demo-ch1', 'Capítulo 1');
 });
 
 
@@ -135,32 +136,13 @@ function chapterLabel(i, title){
   return `${i}. ${title || "Capítulo"}`;
 }
 
-
-
-function setCurrentChapterUI(enabled, chapterTitle = ""){
-  // Nuevo UI (no input)
-  const titleEl = qs("chapterTitleText");
-  const editBtn = qs("editChapterBtn");
-
-  if (titleEl){
-    titleEl.textContent = enabled ? (chapterTitle || "Capítulo") : "Selecciona un capítulo";
-  }
-  if (editBtn){
-    editBtn.disabled = !enabled;
-  }
-
-  // Mantengo lo demás igual
-  //qs("saveChapterTitleBtn").disabled = !enabled;   // (lo quitaremos después si quieres)
-  const btnSubTop = qs("addSubchapterBtnTop");
-  if (btnSubTop) btnSubTop.disabled = !enabled;
-
-  const btnSubNav = qs("addSubchapterBtnNav");
-  if (btnSubNav) btnSubNav.disabled = !enabled;
-
+function setCurrentChapterUI(enabled){
+  qs("chapterTitleInput").disabled = !enabled;
+  qs("saveChapterTitleBtn").disabled = !enabled;
+  qs("addSubchapterBtnTop").disabled = !enabled;
 
   qs("subchaptersEmpty").style.display = enabled ? "none" : "block";
 }
-
 
 async function loadChapters(){
   const chaptersCol = collection(db, "users", uid, "certs", certId, "chapters");
@@ -206,30 +188,26 @@ async function loadChapters(){
   return chapters;
 }
 
-
-
-
 async function selectChapter(chapterId){
   currentChapterId = chapterId;
   currentChapterRef = doc(db, "users", uid, "certs", certId, "chapters", chapterId);
 
+  // highlight in sidenav
+  const links = qs("chaptersList").querySelectorAll("a");
+  links.forEach(a => a.classList.remove("cs-active"));
+  // best-effort: highlight by matching chapterId via closure not available, skip
+
   const snap = await getDoc(currentChapterRef);
   const data = snap.data() || {};
 
-  // UI nuevo: título estático
-  setCurrentChapterUI(true, data.title || "Capítulo");
+  qs("chapterTitleInput").value = data.title || "";
+  M.updateTextFields();
 
-  // Conecta el modal de editar (usa tu helper que ya creaste arriba)
-  if (window.csSetSelectedChapter){
-    window.csSetSelectedChapter(chapterId, data.title || "Capítulo");
-  }
+  //qs("currentChapterChip").textContent = data.title ? data.title : "Capítulo";
+  setCurrentChapterUI(true);
 
   await loadSubchapters();
 }
-
-
-
-
 
 async function getNextOrder(colRef){
   const qy = query(colRef, orderBy("order", "desc"), limit(1));
@@ -237,6 +215,59 @@ async function getNextOrder(colRef){
   if (snaps.empty) return 1;
   const last = snaps.docs[0].data();
   return (last.order || 0) + 1;
+}
+
+
+function buildTitle(prefix, suffixRaw){
+  const suffix = (suffixRaw || "").trim();
+  return suffix ? `${prefix} — ${suffix}` : prefix;
+}
+
+async function createChapterWithSuffix(order, suffixRaw){
+  const prefix = `Capítulo ${order}`;
+  const title = buildTitle(prefix, suffixRaw);
+
+  const chaptersCol = collection(db, "users", uid, "certs", certId, "chapters");
+  const docRef = await addDoc(chaptersCol, {
+    title,
+    order,
+    prefix,
+    suffix: (suffixRaw || "").trim(),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+
+  toastSuccess("Capítulo creado ✅");
+  currentChapterId = docRef.id;
+  currentChapterOrder = order;
+
+  await loadChapters();
+  await selectChapter(docRef.id);
+}
+
+async function createSubchapterWithSuffix(subOrder, suffixRaw){
+  if (!currentChapterId || !currentChapterOrder){
+    toastWarn("Primero selecciona un capítulo.");
+    return;
+  }
+
+  const prefix = `${currentChapterOrder}.${subOrder}`;
+  const title = buildTitle(prefix, suffixRaw);
+
+  const subCol = collection(db, "users", uid, "certs", certId, "chapters", currentChapterId, "subchapters");
+
+  await addDoc(subCol, {
+    title,
+    order: subOrder,
+    prefix,
+    suffix: (suffixRaw || "").trim(),
+    content: "",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+
+  toastSuccess("Subcapítulo creado ✅");
+  await loadSubchapters();
 }
 
 async function addChapter(){
@@ -256,12 +287,28 @@ async function addChapter(){
   await loadChapters();
 }
 
-/*
 async function saveChapterTitle(){
-  toastInfo("Ahora el nombre del capítulo se edita desde el botón Editar (modal).");
-}
-*/
+  if (!currentChapterRef) return;
 
+  const title = qs("chapterTitleInput").value.trim();
+  if (!title){
+    toastWarn("Ponle nombre al capítulo.");
+    return;
+  }
+
+  try{
+    await updateDoc(currentChapterRef, {
+      title,
+      updatedAt: serverTimestamp()
+    });
+    //qs("currentChapterChip").textContent = title;
+    toastSuccess("Capítulo actualizado ✅");
+    await loadChapters();
+  } catch (e){
+    console.error(e);
+    toastError("No se pudo guardar el capítulo.");
+  }
+}
 
 async function loadSubchapters(){
   if (!currentChapterId) return;
@@ -390,16 +437,73 @@ function wireUI(){
     window.location.href = "./dashboard.html";
   });
 
-  qs("addChapterBtn").addEventListener("click", addChapter);
-  qs("addChapterBtnTop").addEventListener("click", addChapter);
+  // Modales: crear capítulo / subcapítulo
+  const chapterModal = M.Modal.init(qs("createChapterModal"), { dismissible: true });
+  const subchapterModal = M.Modal.init(qs("createSubchapterModal"), { dismissible: true });
 
-  const btnSubTop = qs("addSubchapterBtnTop");
-  if (btnSubTop) btnSubTop.addEventListener("click", addSubchapter);
+  const openChapterModal = async () => {
+    const chaptersCol = collection(db, "users", uid, "certs", certId, "chapters");
+    const nextOrder = await getNextOrder(chaptersCol);
 
-  const btnSubNav = qs("addSubchapterBtnNav");
-  if (btnSubNav) btnSubNav.addEventListener("click", addSubchapter);
+    qs("chapterPrefixPreview").textContent = `Capítulo ${nextOrder}`;
+    qs("chapterSuffixInput").value = "";
+    qs("confirmCreateChapterBtn").dataset.nextOrder = String(nextOrder);
+    M.updateTextFields();
 
-  //qs("saveChapterTitleBtn").addEventListener("click", saveChapterTitle);
+    chapterModal.open();
+    qs("chapterSuffixInput")?.focus();
+  };
+
+  const openSubchapterModal = async () => {
+    if (!currentChapterId || !currentChapterOrder){
+      toastWarn("Primero selecciona un capítulo.");
+      return;
+    }
+
+    const subCol = collection(db, "users", uid, "certs", certId, "chapters", currentChapterId, "subchapters");
+    const nextSub = await getNextOrder(subCol);
+
+    qs("subchapterPrefixPreview").textContent = `${currentChapterOrder}.${nextSub}`;
+    qs("subchapterSuffixInput").value = "";
+    qs("confirmCreateSubchapterBtn").dataset.nextSub = String(nextSub);
+    M.updateTextFields();
+
+    subchapterModal.open();
+    qs("subchapterSuffixInput")?.focus();
+  };
+
+  // Botones (Top + Nav)
+  qs("addChapterBtnNav")?.addEventListener("click", openChapterModal);
+  qs("addChapterBtnTop")?.addEventListener("click", openChapterModal);
+
+  qs("addSubchapterBtnNav")?.addEventListener("click", openSubchapterModal);
+  qs("addSubchapterBtnTop")?.addEventListener("click", openSubchapterModal);
+
+  // Confirmar crear capítulo
+  qs("confirmCreateChapterBtn")?.addEventListener("click", async () => {
+    try{
+      const order = Number(qs("confirmCreateChapterBtn").dataset.nextOrder);
+      const suffix = qs("chapterSuffixInput").value;
+      await createChapterWithSuffix(order, suffix);
+      chapterModal.close();
+    } catch (e){
+      console.error(e);
+      toastError("No se pudo crear el capítulo.");
+    }
+  });
+
+  // Confirmar crear subcapítulo
+  qs("confirmCreateSubchapterBtn")?.addEventListener("click", async () => {
+    try{
+      const subOrder = Number(qs("confirmCreateSubchapterBtn").dataset.nextSub);
+      const suffix = qs("subchapterSuffixInput").value;
+      await createSubchapterWithSuffix(subOrder, suffix);
+      subchapterModal.close();
+    } catch (e){
+      console.error(e);
+      toastError("No se pudo crear el subcapítulo.");
+    }
+  });
 
   qs("editCoverBtn").addEventListener("click", editCover);
 }
