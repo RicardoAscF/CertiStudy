@@ -192,24 +192,28 @@ async function selectChapter(chapterId){
   currentChapterId = chapterId;
   currentChapterRef = doc(db, "users", uid, "certs", certId, "chapters", chapterId);
 
-  // highlight in sidenav
-  const links = qs("chaptersList").querySelectorAll("a");
-  links.forEach(a => a.classList.remove("cs-active"));
-  // best-effort: highlight by matching chapterId via closure not available, skip
-
   const snap = await getDoc(currentChapterRef);
   const data = snap.data() || {};
-  // UI: ahora es texto, no input
-  setCurrentChapterUI(true, chapter.title || "");
 
-  // si existe tu helper del modal (para renombrar), sincronízalo
+  // guarda el "order" del capítulo (lo necesitas para subcapítulos 1.1, 1.2, etc.)
+  currentChapterOrder = data.order || null;
+
+  // UI: habilita acciones dependientes del capítulo
+  setCurrentChapterUI(true);
+
+  // Si tu UI muestra el título en texto, actualízalo aquí:
+  const title = data.title || `Capítulo ${currentChapterOrder || ""}`.trim();
+  const chapterTitleText = document.getElementById("chapterTitleText");
+  if (chapterTitleText) chapterTitleText.textContent = title;
+
+  // Sincroniza el modal de "Renombrar capítulo" (si existe)
   if (window.csSetSelectedChapter) {
-    window.csSetSelectedChapter(chapter.id, chapter.title || "");
+    window.csSetSelectedChapter(chapterId, title);
   }
-
 
   await loadSubchapters();
 }
+
 
 async function getNextOrder(colRef){
   const qy = query(colRef, orderBy("order", "desc"), limit(1));
