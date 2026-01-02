@@ -138,14 +138,21 @@ function chapterLabel(i, title){
 
 function setCurrentChapterUI(enabled){
   const editBtn = qs("editChapterBtn");
-  if (editBtn) editBtn.disabled = !enabled;
+  if (editBtn){
+    editBtn.disabled = !enabled;
+    editBtn.classList.toggle("disabled", !enabled);
+  }
 
   const addSubBtn = qs("addSubchapterBtnTop");
-  if (addSubBtn) addSubBtn.disabled = !enabled;
+  if (addSubBtn){
+    addSubBtn.disabled = !enabled;
+    addSubBtn.classList.toggle("disabled", !enabled);
+  }
 
   const empty = qs("subchaptersEmpty");
   if (empty) empty.style.display = enabled ? "none" : "block";
 }
+
 
 
 async function loadChapters(){
