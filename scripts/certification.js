@@ -137,12 +137,16 @@ function chapterLabel(i, title){
 }
 
 function setCurrentChapterUI(enabled){
-  qs("chapterTitleInput").disabled = !enabled;
-  qs("saveChapterTitleBtn").disabled = !enabled;
-  qs("addSubchapterBtnTop").disabled = !enabled;
+  const editBtn = qs("editChapterBtn");
+  if (editBtn) editBtn.disabled = !enabled;
 
-  qs("subchaptersEmpty").style.display = enabled ? "none" : "block";
+  const addSubBtn = qs("addSubchapterBtnTop");
+  if (addSubBtn) addSubBtn.disabled = !enabled;
+
+  const empty = qs("subchaptersEmpty");
+  if (empty) empty.style.display = enabled ? "none" : "block";
 }
+
 
 async function loadChapters(){
   const chaptersCol = collection(db, "users", uid, "certs", certId, "chapters");
