@@ -202,3 +202,9 @@
     justify-content: flex-end;
   }
 }
+
+
+.cs-subchapter-actions .cs-btn-primary{
+  width: auto;
+  margin-top: 0;
+}
